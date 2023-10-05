@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=10.0">
+    <title>Lead Time Prediction Vizag Steel Plant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 115vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #1e430c;
+            font-size: 30px; /* Adjust the font size as needed */
+            margin-bottom: 40px; /* Add margin for spacing */
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            font-size: 1.2em;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .disclaimer {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 20px;
+        }
+        .for_centering {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+        }
+        .disclaimer1 {
+            font-size: 1em;
+            color: #888;
+            margin-top: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <img src="steel_plant_img.png" alt="Steel plant" width="1400" height="200">
+        <div class="for_centering">
+    <div class="container">
+        <h1>Lead Time Prediction </h1>
+        <form id="prediction-form">
+            <label for="catalog_no">Catalog Number:</label>
+            <input type="text" id="catalog_no" name="catalog_no" required><br><br>
+            
+            <label for="order_date">Indent Date:</label>
+            <input type="date" id="order_date" name="order_date" required><br><br>
+
+            <button type="submit">Predict</button>
+        </form>
+
+        <div id="result">
+            <!-- Display prediction results here -->
+        </div>
+
+        <div class="disclaimer">
+            Disclaimer: This is a prediction tool provided by Vizag Steel Plant for reference purposes only.
+        </div>
+    </div>
+</div>
+<div class="disclaimer1">
+    Under the esteemed guidance of T.V.Kameswara Rao,Dy.GM (IT&ERP)
+</div>
+<div class="disclaimer1">
+    Maintained by Thikkireddy Srikara Rao,Jeevan B A,Dukkipathi Lokesh Naga Manikanta,Yennapusala Nikhil Reddy.
+</div>
+
+</div>
+
+    <script>
+        // JavaScript to handle form submission and display results
+        document.querySelector('#prediction-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const catalogNo = document.getElementById('catalog_no').value;
+            const orderDate = document.getElementById('order_date').value;
+            fetch('/getprediction', {
+                method: 'POST',
+                body: JSON.stringify({ 'CATALOG_NO': catalogNo, 'ORDER_DATE': orderDate }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = Predicted Lead Time: ${data.y_pred} Days;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = 'Error occurred while predicting.';
+            });
+        });
+    </script>
+</body>
+</html>
